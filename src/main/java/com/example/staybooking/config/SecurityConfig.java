@@ -28,8 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/register/*")
-                .permitAll()
+                .antMatchers(HttpMethod.POST, "/register/*").permitAll()
+                .antMatchers(HttpMethod.POST, "/authenticate/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf()
@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }

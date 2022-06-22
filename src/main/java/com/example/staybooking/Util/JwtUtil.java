@@ -1,6 +1,7 @@
 package com.example.staybooking.Util;
 
 import com.google.api.client.util.Value;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
@@ -24,4 +25,21 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
+
+    private Claims extractClaims(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+    }
+
+    public String extractUsername(String token) {
+        return extractClaims(token).getSubject();
+    }
+
+    public Date extractExpiration(String token) {
+        return extractClaims(token).getExpiration();
+    }
+
+    public Boolean validateToken(String token) {
+        return extractExpiration(token).after(new Date());
+    }
+
 }
